@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="ca-valencia" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Història de l'Islam (s. VI - XI) | Cronologia Interactiva</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            100: '#fef3c7',
+                            200: '#fde68a',
+                            300: '#fcd34d',
+                            400: '#fbbf24',
+                            500: '#d4af37',
+                            600: '#b48a1d',
+                            700: '#8c6810',
+                        },
+                        islamicBg: '#0a1210',
+                        islamicCard: '#101c18',
+                        emeraldCustom: {
+                            800: '#0f382c',
+                            900: '#0a261e',
+                            950: '#051410',
+                        }
+                    },
+                    fontFamily: {
+                        amiri: ['Amiri', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Progress Bar Top */
+        #progress-bar {
+            width: 0%;
+            transition: width 0.1s ease-out;
+        }
+
+        /* Scroll Reveal Animation */
+        .reveal-item {
+            opacity: 0;
+            transform: translateY(45px);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+
+        .reveal-item.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a1210;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d4af37;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #fbbf24;
+        }
+
+        /* Islamic Geometric Pattern Background */
+        .bg-islamic-pattern {
+            background-color: #0a1210;
+            background-image: radial-gradient(#d4af37 0.75px, transparent 0.75px), radial-gradient(#d4af37 0.75px, #0a1210 0.75px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+            background-opacity: 0.04;
+        }
+
+        .card-bg {
+            background-color: #101c18;
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            transition: all 0.35s ease;
+        }
+
+        .card-bg:hover {
+            border-color: rgba(254, 211, 77, 0.7);
+            transform: translateY(-4px);
+            box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(212, 175, 55, 0.15);
+        }
+
+        /* SVG Vector Hero Banners styling */
+        .svg-banner {
+            background: linear-gradient(135deg, #0a261e 0%, #051410 100%);
+        }
+    </style>
+</head>
+<body class="bg-islamicBg text-slate-100 font-sans selection:bg-gold-500 selection:text-emeraldCustom-950 min-h-screen flex flex-col antialiased bg-islamic-pattern">
+
+    <!-- Indicador de Progrés de Lectura Superior -->
+    <div class="fixed top-0 left-0 w-full h-1.5 bg-emeraldCustom-950 z-50">
+        <div id="progress-bar" class="h-full bg-gradient-to-r from-gold-600 via-gold-400 to-amber-300 shadow-[0_0_10px_#d4af37]"></div>
+    </div>
+
+    <!-- Capçalera principal -->
+    <header class="sticky top-0 z-40 bg-emeraldCustom-950/95 backdrop-blur-md border-b border-gold-500/25 shadow-2xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logotip i Títol -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center text-emeraldCustom-950 text-2xl font-bold shadow-lg shadow-gold-500/20">
+                        <i class="fa-solid font-amiri">☪</i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl sm:text-2xl font-bold font-amiri text-gold-400 tracking-wide">
+                            Història de l'Islam
+                        </h1>
+                        <p class="text-xs text-emerald-400 font-medium tracking-wider uppercase">Segles VI – XI · Cronologia Històrica</p>
+                    </div>
+                </div>
+
+                <!-- Botó d'Acció Ràpida -->
+                <div class="flex items-center gap-3">
+                    <a href="#timeline" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gold-500 hover:bg-gold-400 text-emeraldCustom-950 font-bold text-xs sm:text-sm transition-all duration-300 shadow-lg shadow-gold-500/20">
+                        <i class="fa-solid fa-timeline"></i>
+                        <span class="hidden sm:inline">Explorar Línia de Temps</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contingut Principal -->
+    <main class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
+
+        <!-- Banner Principal / Hero -->
+        <section class="relative rounded-3xl bg-gradient-to-br from-emeraldCustom-900 via-emeraldCustom-950 to-black p-8 sm:p-12 border border-gold-500/30 shadow-2xl overflow-hidden">
+            <div class="absolute -right-10 -bottom-10 opacity-10 text-gold-400 font-amiri text-9xl select-none pointer-events-none">
+                التاريخ
+            </div>
+            <div class="relative z-10 max-w-3xl space-y-4">
+                <span class="inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-bold bg-gold-500/20 text-gold-300 border border-gold-500/30">
+                    <i class="fa-solid fa-star text-gold-400 mr-2 text-[10px]"></i> Recorregut de 5 Segles
+                </span>
+                <h2 class="text-3xl sm:text-5xl font-extrabold font-amiri text-gold-300 leading-tight">
+                    Les 11 Dates Clau de la Història de l'Islam
+                </h2>
+                <p class="text-slate-300 text-base sm:text-lg leading-relaxed font-normal">
+                    Explora els esdeveniments fonamentals que van transformar el món mediterrani i oriental des del naixement del profeta Mahoma fins a l'arribada dels turcs seljúcides a Bagdad.
+                </p>
+            </div>
+        </section>
+
+        <!-- Cercador i Filtres d'Època -->
+        <section class="bg-emeraldCustom-900/90 backdrop-blur-md p-5 rounded-2xl border border-gold-500/25 shadow-xl space-y-4">
+            <div class="flex flex-col md:flex-row items-center gap-4 justify-between">
+                
+                <!-- Input de Cerca -->
+                <div class="relative w-full md:w-80">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gold-400"></i>
+                    <input type="text" id="search-input" onkeyup="filterEvents()" placeholder="Cerca per any, ciutat o esdeveniment..." 
+                           class="w-full pl-11 pr-4 py-2.5 bg-islamicBg border border-emerald-700/60 rounded-xl text-slate-100 placeholder-slate-400 text-sm focus:outline-none focus:border-gold-400 transition-colors">
+                </div>
+
+                <!-- Botons de Categoria / Època -->
+                <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
+                    <button onclick="setCategory('all')" id="cat-all" class="cat-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-gold-500 text-emeraldCustom-950 transition-all shadow-md">
+                        Tots (11)
+                    </button>
+                    <button onclick="setCategory('origen')" id="cat-origen" class="cat-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-islamicBg text-slate-300 hover:text-gold-300 border border-emerald-800 transition-all">
+                        Orígens
+                    </button>
+                    <button onclick="setCategory('expansio')" id="cat-expansio" class="cat-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-islamicBg text-slate-300 hover:text-gold-300 border border-emerald-800 transition-all">
+                        Primers Califats
+                    </button>
+                    <button onclick="setCategory('apogeu')" id="cat-apogeu" class="cat-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-islamicBg text-slate-300 hover:text-gold-300 border border-emerald-800 transition-all">
+                        Apogeu i Expansió
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Línia de Temps Vertical Interactiva -->
+        <section id="timeline" class="relative border-l-2 sm:border-l-4 border-gold-500/40 ml-4 sm:ml-32 space-y-12 py-4">
+            
+            <!-- ESDEVENIMENT 1 -->
+            <div class="event-card reveal-item relative pl-8 sm:pl-12" data-category="origen" data-search="570 naixement mahoma meca arabia profeta">
+                <div class="hidden sm:flex absolute -left-36 top-1 w-28 text-right justify-end items-center">
+                    <span class="text-lg font-bold font-amiri text-gold-400 bg-emeraldCustom-900 px-3 py-1 rounded-lg border border-gold-500/30 shadow-md">c. 570</span>
+                </div>
+                <div class="absolute -left-[17px] sm:-left-[21px] top-2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-islamicBg border-2 sm:border-4 border-gold-400 flex items-center justify-center text-gold-400 shadow-lg shadow-gold-500/30 z-10">
+                    <i class="fa-solid fa-star-and-crescent text-xs sm:text-sm"></i>
+                </div>
+                <div class="card-bg rounded-2xl overflow-hidden transition-all group cursor-pointer" onclick="openModal(0)">
+                    <div class="relative h-48 sm:h-56 svg-banner flex items-center justify-center p-6 border-b border-gold-500/20">
+                        <!-- Vector SVG Tema: Desert i Oasis de La Meca -->
+                        <svg class="w-full h-full max-h-40 text-gold-400 opacity-90" viewBox="0 0 400 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0 130 C100 100 200 150 400 120 L400 160 L0 160 Z" fill="#0f382c"/>
+                            <path d="M0 140 C150 110 280 155 400 135 L400 160 L0 160 Z" fill="#051410"/>
+                            <!-- Sol/Lluna -->
+                            <circle cx="320" cy="50" r="24" fill="#d4af37" fill-opacity="0.2" stroke="#d4af37" stroke-width="2"/>
+                            <!-- Siluetes de palmeres -->
+                            <path d="M70 130 Q75 100 80 80 M80 80 Q60 70 50 75 M80 80 Q95 65 105 75 M80 80 Q70 60 75 50 M80 80 Q90 60 95 55" stroke="#d4af37" stroke-width="3" stroke-linecap="round"/>
+                            <path d="M300 125 Q303 105 305 90 M305 90 Q290 80 280 85 M305 90 Q320 75 328 85 M305 90 Q295 70 300 60" stroke="#d4af37" stroke-width="2.5" stroke-linecap="round"/>
+                        </svg>
+                        <span class="sm:hidden absolute top-3 left-3 text-xs font-bold text-gold-400 bg-emeraldCustom-950/90 px-3 py-1 rounded-full border border-gold-500/30">c. 570</span>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <h3 class="text-2xl font-bold font-amiri text-gold-300">1. Naixement de Mahoma</h3>
+                        <p class="text-slate-200 text-sm sm:text-base leading-relaxed">
+                            Naixement del profeta Mahoma a la ciutat de La Meca. Membre de la tribu de Quraysh, queda orfe a temprana edat i és acollit pel seu oncle Abu Talib, dedicant-se posteriorment al comerç caravaner.
+                        </p>
+                        <div class="flex items-center justify-between pt-2 text-xs text-gold-400 font-semibold">
+                            <span><i class="fa-solid fa-location-dot mr-1"></i> La Meca, Península Aràbiga</span>
+                            <span class="hover:underline flex items-center gap-1">Llegir més <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ESDEVENIMENT 2 -->
+            <div class="event-card reveal-item relative pl-8 sm:pl-12" data-category="origen" data-search="610 revelacions predicacio alcoran cova hira gabriel meca">
+                <div class="hidden sm:flex absolute -left-36 top-1 w-28 text-right justify-end items-center">
+                    <span class="text-lg font-bold font-amiri text-gold-400 bg-emeraldCustom-900 px-3 py-1 rounded-lg border border-gold-500/30 shadow-md">c. 610</span>
+                </div>
+                <div class="absolute -left-[17px] sm:-left-[21px] top-2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-islamicBg border-2 sm:border-4 border-gold-400 flex items-center justify-center text-gold-400 shadow-lg shadow-gold-500/30 z-10">
+                    <i class="fa-solid fa-book-quran text-xs sm:text-sm"></i>
+                </div>
+                <div class="card-bg rounded-2xl overflow-hidden transition-all group cursor-pointer" onclick="openModal(1)">
+                    <div class="relative h-48 sm:h-56 svg-banner flex items-center justify-center p-6 border-b border-gold-500/20">
+                        <!-- Vector SVG Tema: Cova de Hira / Muntanya de la Llum -->
+                        <svg class="w-full h-full max-h-40 text-gold-400" viewBox="0 0 400 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M50 160 L180 40 L260 110 L350 160 Z" fill="#0f382c"/>
+                            <path d="M120 160 L230 20 L380 160 Z" fill="#051410" stroke="#d4af37" stroke-width="1"/>
+                            <!-- Llum divina / Cova -->
+                            <polygon points="230,20 200,160 260,160" fill="url(#lightGradient)" opacity="0.3"/>
+                            <circle cx="230" cy="20" r="6" fill="#fbbf24"/>
+                            <defs>
+                                <linearGradient id="lightGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.8"/>
+                                    <stop offset="100%" stop-color="#051410" stop-opacity="0"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        <span class="sm:hidden absolute top-3 left-3 text-xs font-bold text-gold-400 bg-emeraldCustom-950/90 px-3 py-1 rounded-full border border-gold-500/30">c. 610</span>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <h3 class="text-2xl font-bold font-amiri text-gold-300">2. Primeres Revelacions i Predicació</h3>
+                        <p class="text-slate-200 text-sm sm:text-base leading-relaxed">
+                            A la cova de Hira (Muntanya Nur), Mahoma rep els primers missatges divins mitjançant l'àngel Gabriel (Jibril). Comença la predicació del monoteisme i la transmissió de l'Alcorà.
+                        </p>
+                        <div class="flex items-center justify-between pt-2 text-xs text-gold-400 font-semibold">
+                            <span><i class="fa-solid fa-mountain mr-1"></i> Cova de Hira, La Meca</span>
+                            <span class="hover:underline flex items-center gap-1">Llegir més <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ESDEVENIMENT 3 -->
+            <div class="event-card reveal-item relative pl-8 sm:pl-12" data-category="origen" data-search="622 hegira emigració medina calendari musulma hijri">
+                <div class="hidden sm:flex absolute -left-36 top-1 w-28 text-right justify-end items-center">
+                    <span class="text-lg font-bold font-amiri text-gold-400 bg-emeraldCustom-900 px-3 py-1 rounded-lg border border-gold-500/30 shadow-md">622</span>
+                </div>
+                <div class="absolute -left-[17px] sm:-left-[21px] top-2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-islamicBg border-2 sm:border-4 border-gold-400 flex items-center justify-center text-gold-400 shadow-lg shadow-gold-500/30 z-10">
+                    <i class="fa-solid fa-route text-xs sm:text-sm"></i>
+                </div>
+                <div class="card-bg rounded-2xl overflow-hidden transition-all group cursor-pointer border-l-4 border-l-gold-500" onclick="openModal(2)">
+                    <div class="relative h-48 sm:h-56 svg-banner flex items-center justify-center p-6 border-b border-gold-500/20">
+                        <!-- Vector SVG Tema: La Hègira i Ruta del Desert -->
+                        <svg class="w-full h-full max-h-40 text-gold-400" viewBox="0 0 400 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Lluna naixent simbolitzant l'inici del calendari -->
+                            <path d="M320 30 A 25 25 0 1 0 345 65 A 20 20 0 1 1 320 30 Z" fill="#d4af37"/>
+                            <!-- Caravana en el desert -->
+                            <path d="M0 135 Q100 120 200 135 T400 130 L400 160 L0 160 Z" fill="#0f382c"/>
+                            <!-- Camells / Caravana silueta -->
+                            <path d="M80 120 Q85 110 90 115 Q95 110 100 120 M140 122 Q145 112 150 117 Q155 112 160 122" stroke="#d4af37" stroke-width="2.5" stroke-linecap="round"/>
+                        </svg>
+                        <span class="sm:hidden absolute top-3 left-3 text-xs font-bold text-gold-400 bg-emeraldCustom-950/90 px-3 py-1 rounded-full border border-gold-500/30">622</span>
+                        <span class="absolute top-3 right-3 text-[10px] font-bold bg-gold-500 text-emeraldCustom-950 px-2.5 py-1 rounded-full">Any 1 de la Hègira</span>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <h3 class="text-2xl font-bold font-amiri text-gold-300">3. La Hègira: Emigració a Medina</h3>
+                        <p class="text-slate-200 text-sm sm:text-base leading-relaxed">
+                            Degut a la persecució a La Meca, Mahoma i els seus seguidors emigren a Iathrib (renomenada Medina). Aquest esdeveniment crucial marca l'inici del calendari musulmà (Híjri).
+                        </p>
+                        <div class="flex items-center justify-between pt-2 text-xs text-gold-400 font-semibold">
+                            <span><i class="fa-solid fa-map-location-dot mr-1"></i> De La Meca a Medina</span>
+                            <span class="hover:underline flex items-center gap-1">Llegir més <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ESDEVENIMENT 4 -->
+            <div class="event-card reveal-item relative pl-8 sm:pl-12" data-category="origen" data-search="632 mort mahoma medina califat abu bakr rashidun">
+                <div class="hidden sm:flex absolute -left-36 top-1 w-28 text-right justify-end items-center">
+                    <span class="text-lg font-bold font-amiri text-gold-400 bg-emeraldCustom-900 px-3 py-1 rounded-lg border border-gold-500/30 shadow-md">632</span>
+                </div>
+                <div class="absolute -left-[17px] sm:-left-[21px] top-2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-islamicBg border-2 sm:border-4 border-gold-400 flex items-center justify-center text-gold-400 shadow-lg shadow-gold-500/30 z-10">
+                    <i class="fa-solid fa-mosque text-xs sm:text-sm"></i>
+                </div>
+                <div class="card-bg rounded-2xl overflow-hidden transition-all group cursor-pointer" onclick="openModal(3)">
+                    <div class="relative h-48 sm:h-56 svg-banner flex items-center justify-center p-6 border-b border-gold-500/20">
+                        <!-- Vector SVG Tema: Mesquita del Profeta a Medina -->
+                        <svg class="w-full h-full max-h-40 text-gold-400" viewBox="0 0 400 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Cúpula i Minaret -->
+                            <path d="M160 160 L160 90 A40 40 0 0 1 240 90 L240 160 Z" fill="#0f382c" stroke="#d4af37" stroke-width="1.5"/>
+                            <path d="M180 90 A20 20 0 0 1 220 90 Z" fill="#d4af37"/>
+                            <rect x="280" y="40" width="16" height="120" fill="#051410" stroke="#d4af37" stroke-width="1.5"/>
+                            <polygon points="288,15 280,40 296,40" fill="#d4af37"/>
+                        </svg>
+                        <span class="sm:hidden absolute top-3 left-3 text-xs font-bold text-gold-400 bg-emeraldCustom-950/90 px-3 py-1 rounded-full border border-gold-500/30">632 (8 de juny)</span>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <h3 class="text-2xl font-bold font-amiri text-gold-300">4. Mort de Mahoma a Medina</h3>
+                        <p class="text-slate-200 text-sm sm:text-base leading-relaxed">
+                            Malaaltia i traspàs del profeta Mahoma el 8 de juny del 632 a Medina. S'inicia el període dels Califes Ben Guiats (Rashidun) amb la meua elecció d'Abu Bakr com a primer califa.
+                        </p>
+                        <div class="flex items-center justify-between pt-2 text-xs text-gold-400 font-semibold">
+                            <span><i class="fa-solid fa-place-of-worship mr-1"></i> Medina, Península Aràbiga</span>
+                            <span class="hover:underline flex items-center gap-1">Llegir més <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ESDEVENIMENT 5 -->
+            <div class="event-card reveal-item relative pl-8 sm:pl-12" data-category="expansio" data-search="637 victoria perses sasanides qadisiya mesopotamia batalla">
+                <div class="hidden sm:flex absolute -left-36 top-1 w-28 text-right justify-end items-center">
+                    <span class="text-lg font-bold font-amiri text-gold-400 bg-emeraldCustom-900 px-3 py-1 rounded-lg border border-gold-500/30 shadow-md">637</span>
+                </div>
+                <div class="absolute -left-[17px] sm:-left-[21px] top-2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-islamicBg border-2 sm:border-4 border-gold-400 flex items-center justify-center text-gold-400 shadow-lg shadow-gold-500/30 z-10">
+                    <i class="fa-solid fa-shield-halved text-xs sm:text-sm"></i>
+                </div>
+                <div class="card-bg rounded-2xl overflow-hidden transition-all group cursor-pointer" onclick="openModal(4)">
+                    <div class="relative h-48 sm:h-56 svg-banner flex items-center justify-center p-6 border-b border-gold-500/20">
+                        <!-- Vector SVG Tema: Batalla de Qadisiya / Escut i Espases -->
+                        <svg class="w-full h-full max-h-40 text-gold-400" viewBox="0 0 400 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Espases creuades -->
+                            <path d="M120 40 L280 120 M120 40 L135 35 M280 120 L290 130" stroke="#d4af37" stroke-width="4" stroke-linecap="round"/>
+                            <path d="M280 40 L120 120 M280 40 L265 35 M120 120 L110 130" stroke="#d4af37" stroke-width="4" stroke-linecap="round"/>
+                            <!-- Escut central -->
+                            <circle cx="200" cy="80" r="30" fill="#0f382c" stroke="#d4af37" stroke-width="3"/>
+                            <circle cx="200" cy="80" r="15" fill="#d4af37"/>
+                        </svg>
+                        <span class="sm:hidden absolute top-3 left-3 text-xs font-bold text-gold-400 bg-emeraldCustom-950/90 px-3 py-1 rounded-full border border-gold-500/30">637</span>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <h3 class="text-2xl font-bold font-amiri text-gold-300">5. Victòria sobre els Perses a Qadisiya</h3>
+                        <p class="text-slate-200 text-sm sm:text-base leading-relaxed">
+                            Victòria militar decisiva de les forces musulmanes sobre l'Imperi Sasànida a la batalla de Qadisiya. Aquest succés va obrir les portes a la conquesta de Mesopotàmia i Pèrsia.
+                        </p>
+                        <div class="flex items-center justify-between pt-2 text-xs text-gold-400 font-semibold">
+                            <span><i class="fa-solid fa-chess-rook mr-1"></i> Qadisiya (Iraq)</span>
+                            <span class="hover:underline flex items-center gap-1">Llegir més <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ESDEVENIMENT 6 -->
+            <div class="event-card reveal-item relative pl-8 sm:pl-12" data-category="expansio" data-search="638 conquesta jerusalem umar al-quds cúpula roca">
+                <div class="hidden sm:flex absolute -left-36 top-1 w-28 text-right justify-end items-center">
+                    <span class="text-lg font-bold font-amiri text-gold-400 bg-emeraldCustom-900 px-3 py-1 rounded-lg border border-gold-500/30 shadow-md">638</span>
+                </div>
+                <div class="absolute -left-[17px] sm:-left-[21px] top-2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-islamicBg border-2 sm:border-4 border-gold-400 flex items-center justify-center text-gold-400 shadow-lg shadow-gold-500/30 z-10">
+                    <i class="fa-solid fa-monument text-xs sm:text-sm"></i>
+                </div>
+                <div class="card-bg rounded-2xl overflow-hidden transition-all group cursor-pointer" onclick="openModal(5)">
+                    <div class="relative h-48 sm:h-56 svg-banner flex items-center justify-center p-6 border-b border-gold-500/20">
+                        <!-- Vector SVG Tema: Jerusalem i Cúpula de la Roca -->
+                        <svg class="w-full h-full max-h-40 text-gold-400" viewBox="0 0 400 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="130" y="100" width="140" height="60" fill="#0f382c" stroke="#d4af37" stroke-width="1.5"/>
+                            <path d="M150 100 A50 50 0 0 1 250 100 Z" fill="#d4af37"/>
+                            <line x1="200" y1="50" x2="200" y2="35" stroke="#d4af37" stroke-width="2"/>
+                            <circle cx="200" cy="32" r="3" fill="#d4af37"/>
+                        </svg>
+                        <span class="sm:hidden absolute top-3 left-3 text-xs font-bold text-gold-400 bg-emeraldCustom-950/90 px-3 py-1 rounded-full border border-gold-500/30">638</span>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <h3 class="text-2xl font-bold font-amiri text-gold-300">6. Conquesta de Jerusalem</h3>
+                        <p class="text-slate-200 text-sm sm:text-base leading-relaxed">
+                            El califa Umar ibn al-Khattab rep la capitulació pacífica de Jerusalem per part del patriarca Sofroni. La ciutat esdevé un dels tres llocs més sagrats de l'Islam.
+                        </p>
+                        <div class="flex items-center justify-between pt-2 text-xs text-gold-400 font-semibold">
+                            <span><i class="fa-solid fa-kaaba mr-1"></i> Jerusalem (Al-Quds)</span>
+                            <span class="hover:underline flex items-center gap-1">Llegir més <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ESDEVENIMENT 7 -->
+            <div class="event-card reveal-item relative pl-8 sm:pl-12" data-category="expansio" data-search="661 assassinat ali dinastia omeia damasc califat muawiya">
+                <div class="hidden sm:flex absolute -left-36 top-1 w-28 text-right justify-end items-center">
+                    <span class="text-lg font-bold font-amiri text-gold-400 bg-emeraldCustom-900 px-3 py-1 rounded-lg border border-gold-500/30 shadow-md">661</span>
+                </div>
+                <div class="absolute -left-[17px] sm:-left-[21px] top-2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-islamicBg border-2 sm:border-4 border-gold-400 flex items-center justify-center text-gold-400 shadow-lg shadow-gold-500/30 z-10">
+                    <i class="fa-solid fa-crown text-xs sm:text-sm"></i>
+                </div>
+                <div class="card-bg rounded-2xl overflow-hidden transition-all group cursor-pointer" onclick="openModal(6)">
+                    <div class="relative h-48 sm:h-56 svg-banner flex items-center justify-center p-6 border-b border-gold-500/20">
+                        <!-- Vector SVG Tema: Dinastia Omeia i Damasc -->
+                        <svg class="w-full h-full max-h-40 text-gold-400" viewBox="0 0 400 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Corona i simulació d'arquitectura omeia -->
+                            <path d="M160 140 L160 90 L200 60 L240 90 L240 140 Z" fill="#0f382c" stroke="#d4af37" stroke-width="2"/>
+                            <path d="M120 140 L120 100 L160 80 M240 80 L280 100 L280 140" stroke="#d4af37" stroke-width="1.5"/>
+                            <circle cx="200" cy="40" r="12" fill="#d4af37"/>
+                        </svg>
+                        <span class="sm:hidden absolute top-3 left-3 text-xs font-bold text-gold-400 bg-emeraldCustom-950/90 px-3 py-1 rounded-full border border-gold-500/30">661</span>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <h3 class="text-2xl font-bold font-amiri text-gold-300">7. Assassinat d'Alí i Dinastia Omeia</h3>
+                        <p class="text-slate-200 text-sm sm:text-base leading-relaxed">
+                            L'assassinat del quart califa, Alí ibn Abi Tàlib, posa fi al califat Rashidun. Muawiya I funda la dinastia dels Omeies, establint la capital de l'imperi a Damasc.
+                        </p>
+                        <div class="flex items-center justify-between pt-2 text-xs text-gold-400 font-semibold">
+                            <span><i class="fa-solid fa-city mr-1"></i> Damasc (Síria)</span>
+                            <span class="hover:underline flex items-center gap-1">Llegir més <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ESDEVENIMENT 8 -->
+            <div class="event-card reveal-item relative pl-8 sm:pl-12" data-category="apogeu" data-search="711 entrada peninsula iberica gibraltar al-andalus tariq hispania">
+                <div class="hidden sm:flex absolute -left-36 top-1 w-28 text-right justify-end items-center">
+                    <span class="text-lg font-bold font-amiri text-gold-400 bg-emeraldCustom-900 px-3 py-1 rounded-lg border border-gold-500/30 shadow-md">711</span>
+                </div>
+                <div class="absolute -left-[17px] sm:-left-[21px] top-2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-islamicBg border-2 sm:border-4 border-gold-400 flex items-center justify-center text-gold-400 shadow-lg shadow-gold-500/30 z-10">
+                    <i class="fa-solid fa-ship text-xs sm:text-sm"></i>
+                </div>
+                <div class="card-bg rounded-2xl overflow-hidden transition-all group cursor-pointer border-l-4 border-l-gold-500" onclick="openModal(7)">
+                    <div class="relative h-48 sm:h-56 svg-banner flex items-center justify-center p-6 border-b border-gold-500/20">
+                        <!-- Vector SVG Tema: Creuament de Gibraltar / Al-Àndalus -->
+                        <svg class="w-full h-full max-h-40 text-gold-400" viewBox="0 0 400 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- El Penyal de Gibraltar -->
+                            <path d="M260 160 L240 70 L330 90 L380 160 Z" fill="#0f382c" stroke="#d4af37" stroke-width="1.5"/>
+                            <!-- Onades i Vaixell -->
+                            <path d="M0 145 C100 135 200 155 400 145 L400 160 L0 160 Z" fill="#051410"/>
+                            <path d="M100 130 L140 130 L150 142 L90 142 Z" fill="#d4af37"/>
+                            <line x1="120" y1="130" x2="120" y2="100" stroke="#d4af37" stroke-width="2"/>
+                            <polygon points="120,105 145,115 120,125" fill="#d4af37"/>
+                        </svg>
+                        <span class="sm:hidden absolute top-3 left-3 text-xs font-bold text-gold-400 bg-emeraldCustom-950/90 px-3 py-1 rounded-full border border-gold-500/30">711</span>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <h3 class="text-2xl font-bold font-amiri text-gold-300">8. Entrada a la Península Ibèrica</h3>
+                        <p class="text-slate-200 text-sm sm:text-base leading-relaxed">
+                            Les forces dirigides per Tàriq ibn Ziyad creuen l'estret de Gibraltar. Després de la victòria a Guadalete, s'inicia la conquesta de la península i el naixement d'Al-Àndalus.
+                        </p>
+                        <div class="flex items-center justify-between pt-2 text-xs text-gold-400 font-semibold">
+                            <span><i class="fa-solid fa-water mr-1"></i> Estret de Gibraltar / Hispania</span>
+                            <span class="hover:underline flex items-center gap-1">Llegir més <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ESDEVENIMENT 9 -->
+            <div class="event-card reveal-item relative pl-8 sm:pl-12" data-category="apogeu" data-search="762 fundacio bagdad ciutat pau abbassida al-mansur capital">
+                <div class="hidden sm:flex absolute -left-36 top-1 w-28 text-right justify-end items-center">
+                    <span class="text-lg font-bold font-amiri text-gold-400 bg-emeraldCustom-900 px-3 py-1 rounded-lg border border-gold-500/30 shadow-md">762</span>
+                </div>
+                <div class="absolute -left-[17px] sm:-left-[21px] top-2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-islamicBg border-2 sm:border-4 border-gold-400 flex items-center justify-center text-gold-400 shadow-lg shadow-gold-500/30 z-10">
+                    <i class="fa-solid fa-building-columns text-xs sm:text-sm"></i>
+                </div>
+                <div class="card-bg rounded-2xl overflow-hidden transition-all group cursor-pointer" onclick="openModal(8)">
+                    <div class="relative h-48 sm:h-56 svg-banner flex items-center justify-center p-6 border-b border-gold-500/20">
+                        <!-- Vector SVG Tema: Bagdad (La Ciutat Circular) -->
+                        <svg class="w-full h-full max-h-40 text-gold-400" viewBox="0 0 400 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Cercles concentrics de la ciutat circular -->
+                            <circle cx="200" cy="80" r="60" fill="#0f382c" stroke="#d4af37" stroke-width="2"/>
+                            <circle cx="200" cy="80" r="40" stroke="#d4af37" stroke-width="1.5" stroke-dasharray="4 4"/>
+                            <circle cx="200" cy="80" r="15" fill="#d4af37"/>
+                            <!-- Portes cardinals -->
+                            <line x1="200" y1="15" x2="200" y2="145" stroke="#d4af37" stroke-width="1" opacity="0.5"/>
+                            <line x1="135" y1="80" x2="265" y2="80" stroke="#d4af37" stroke-width="1" opacity="0.5"/>
+                        </svg>
+                        <span class="sm:hidden absolute top-3 left-3 text-xs font-bold text-gold-400 bg-emeraldCustom-950/90 px-3 py-1 rounded-full border border-gold-500/30">762</span>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <h3 class="text-2xl font-bold font-amiri text-gold-300">9. Fundació de Bagdad</h3>
+                        <p class="text-slate-200 text-sm sm:text-base leading-relaxed">
+                            El califa abbàssida Al-Mansur funda la ciutat circular de Bagdad ("Madinat al-Salam" o Ciutat de la Pau). Es converteix ràpidament en el centre cultural i científic del món.
+                        </p>
+                        <div class="flex items-center justify-between pt-2 text-xs text-gold-400 font-semibold">
+                            <span><i class="fa-solid fa-compass mr-1"></i> Bagdad (Iraq)</span>
+                            <span class="hover:underline flex items-center gap-1">Llegir més <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ESDEVENIMENT 10 -->
+            <div class="event-card reveal-item relative pl-8 sm:pl-12" data-category="apogeu" data-search="929 abderraman iii califat cordoba al-andalus mesquita">
+                <div class="hidden sm:flex absolute -left-36 top-1 w-28 text-right justify-end items-center">
+                    <span class="text-lg font-bold font-amiri text-gold-400 bg-emeraldCustom-900 px-3 py-1 rounded-lg border border-gold-500/30 shadow-md">929</span>
+                </div>
+                <div class="absolute -left-[17px] sm:-left-[21px] top-2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-islamicBg border-2 sm:border-4 border-gold-400 flex items-center justify-center text-gold-400 shadow-lg shadow-gold-500/30 z-10">
+                    <i class="fa-solid fa-chess-king text-xs sm:text-sm"></i>
+                </div>
+                <div class="card-bg rounded-2xl overflow-hidden transition-all group cursor-pointer border-l-4 border-l-gold-500" onclick="openModal(9)">
+                    <div class="relative h-48 sm:h-56 svg-banner flex items-center justify-center p-6 border-b border-gold-500/20">
+                        <!-- Vector SVG Tema: Mesquita de Còrdova / Arcs de Ferradura -->
+                        <svg class="w-full h-full max-h-40 text-gold-400" viewBox="0 0 400 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Arcs tradicionals de Còrdova -->
+                            <path d="M100 160 L100 90 A30 30 0 1 1 160 90 L160 160 Z" fill="#0f382c" stroke="#d4af37" stroke-width="2"/>
+                            <path d="M170 160 L170 90 A30 30 0 1 1 230 90 L230 160 Z" fill="#0f382c" stroke="#d4af37" stroke-width="2"/>
+                            <path d="M240 160 L240 90 A30 30 0 1 1 300 90 L300 160 Z" fill="#0f382c" stroke="#d4af37" stroke-width="2"/>
+                        </svg>
+                        <span class="sm:hidden absolute top-3 left-3 text-xs font-bold text-gold-400 bg-emeraldCustom-950/90 px-3 py-1 rounded-full border border-gold-500/30">929</span>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <h3 class="text-2xl font-bold font-amiri text-gold-300">10. Proclamació del Califat de Còrdova</h3>
+                        <p class="text-slate-200 text-sm sm:text-base leading-relaxed">
+                            L'emir omeya Abderraman III es proclama oficialment califa a Còrdova, donant inici a l'etapa de màxim desenvolupament cultural, econòmic i arquitectònic d'Al-Àndalus.
+                        </p>
+                        <div class="flex items-center justify-between pt-2 text-xs text-gold-400 font-semibold">
+                            <span><i class="fa-solid fa-landmark mr-1"></i> Còrdova (Al-Àndalus)</span>
+                            <span class="hover:underline flex items-center gap-1">Llegir més <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ESDEVENIMENT 11 -->
+            <div class="event-card reveal-item relative pl-8 sm:pl-12" data-category="apogeu" data-search="1055 turcs seljucides bagdad tugril beg segona expansio">
+                <div class="hidden sm:flex absolute -left-36 top-1 w-28 text-right justify-end items-center">
+                    <span class="text-lg font-bold font-amiri text-gold-400 bg-emeraldCustom-900 px-3 py-1 rounded-lg border border-gold-500/30 shadow-md">1055</span>
+                </div>
+                <div class="absolute -left-[17px] sm:-left-[21px] top-2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-islamicBg border-2 sm:border-4 border-gold-400 flex items-center justify-center text-gold-400 shadow-lg shadow-gold-500/30 z-10">
+                    <i class="fa-solid fa-horse text-xs sm:text-sm"></i>
+                </div>
+                <div class="card-bg rounded-2xl overflow-hidden transition-all group cursor-pointer" onclick="openModal(10)">
+                    <div class="relative h-48 sm:h-56 svg-banner flex items-center justify-center p-6 border-b border-gold-500/20">
+                        <!-- Vector SVG Tema: Turcs Seljúcides -->
+                        <svg class="w-full h-full max-h-40 text-gold-400" viewBox="0 0 400 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Arc i fletxa seljúcida -->
+                            <path d="M150 30 C 230 30 230 130 150 130" stroke="#d4af37" stroke-width="4" fill="none"/>
+                            <line x1="150" y1="30" x2="150" y2="130" stroke="#d4af37" stroke-width="1.5"/>
+                            <line x1="120" y1="80" x2="240" y2="80" stroke="#d4af37" stroke-width="3"/>
+                            <polygon points="240,80 225,73 225,87" fill="#d4af37"/>
+                        </svg>
+                        <span class="sm:hidden absolute top-3 left-3 text-xs font-bold text-gold-400 bg-emeraldCustom-950/90 px-3 py-1 rounded-full border border-gold-500/30">1055</span>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <h3 class="text-2xl font-bold font-amiri text-gold-300">11. Entrada dels Turcs Seljúcides a Bagdad</h3>
+                        <p class="text-slate-200 text-sm sm:text-base leading-relaxed">
+                            Tugrïl Beg, líder dels turcs seljúcides, entra a Bagdad. Manté la figura del califa abbàssida com a líder religiós però assumeix el poder executiu com a Sultà.
+                        </p>
+                        <div class="flex items-center justify-between pt-2 text-xs text-gold-400 font-semibold">
+                            <span><i class="fa-solid fa-shield mr-1"></i> Bagdad, Imperi Seljúcida</span>
+                            <span class="hover:underline flex items-center gap-1">Llegir més <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Missatge de no resultats -->
+        <div id="no-results" class="hidden text-center py-12 space-y-3">
+            <i class="fa-solid fa-magnifying-glass text-4xl text-gold-500/40"></i>
+            <p class="text-lg text-slate-300 font-semibold">No s'han trobat esdeveniments per a la teua cerca.</p>
+            <button onclick="resetSearch()" class="px-4 py-2 bg-gold-500 text-emeraldCustom-950 font-bold rounded-xl text-xs">Netejar cerca</button>
+        </div>
+
+    </main>
+
+    <!-- Modal Detallat d'Esdeveniments -->
+    <div id="modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300">
+        <div id="modal-container" class="bg-islamicCard border border-gold-500/40 rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl transform scale-95 transition-transform duration-300">
+            <div id="modal-header" class="relative h-48 svg-banner flex items-center justify-center p-6 border-b border-gold-500/20">
+                <div id="modal-svg-container" class="w-full h-full flex items-center justify-center"></div>
+                <button onclick="closeModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/60 text-gold-400 flex items-center justify-center hover:bg-gold-500 hover:text-emeraldCustom-950 transition-colors">
+                    <i class="fa-solid fa-xmark text-base"></i>
+                </button>
+                <span id="modal-date" class="absolute bottom-4 left-6 px-3.5 py-1 rounded-full text-xs font-bold bg-gold-500 text-emeraldCustom-950 shadow-md"></span>
+            </div>
+            <div class="p-6 sm:p-8 space-y-4">
+                <h3 id="modal-title" class="text-2xl sm:text-3xl font-bold font-amiri text-gold-300"></h3>
+                <p id="modal-desc" class="text-slate-200 text-sm sm:text-base leading-relaxed"></p>
+                <div id="modal-loc" class="text-xs text-gold-400 font-semibold pt-3 border-t border-emerald-800/80"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Peu de pàgina -->
+    <footer class="border-t border-gold-500/20 bg-emeraldCustom-950 py-8 mt-12 text-center text-xs text-slate-400">
+        <div class="max-w-7xl mx-auto px-4 space-y-2">
+            <p class="font-amiri text-base text-gold-400">Cronologia Històrica de l'Islam · Segles VI a XI</p>
+            <p>© Dissenyat en valencià amb il·lustracions vectorials fidels al context històric.</p>
+        </div>
+    </footer>
+
+    <!-- Lògica JavaScript -->
+    <script>
+        // Dades dels 11 esdeveniments per a la modal
+        const eventsData = [
+            {
+                title: "1. Naixement de Mahoma",
+                date: "c. 570 d.C.",
+                location: "La Meca, Península Aràbiga",
+                description: "Mahoma va naéixer a la ciutat mercantil de La Meca. Membre de la tribu dels Quraysh, va quedar orfe des de ben xicotet i va ser educat pel seu oncle Abu Talib. Durant la seua joventut va treballar en les rutes comercials del desert, sent reconegut per la seua integritat.",
+                svg: `<svg class="w-full h-full max-h-36 text-gold-400" viewBox="0 0 400 160" fill="none"><path d="M0 130 C100 100 200 150 400 120 L400 160 L0 160 Z" fill="#0f382c"/><circle cx="320" cy="50" r="24" fill="#d4af37" fill-opacity="0.3" stroke="#d4af37" stroke-width="2"/><path d="M70 130 Q75 100 80 80 M80 80 Q60 70 50 75 M80 80 Q95 65 105 75" stroke="#d4af37" stroke-width="3"/></svg>`
+            },
+            {
+                title: "2. Primeres Revelacions i Predicació",
+                date: "c. 610 d.C.",
+                location: "Cova de Hira, La Meca",
+                description: "Mentre es trobava retirat en oració a la cova de Hira (Muntanya Nur), Mahoma va rebre la primera visita de l'àngel Gabriel (Jibril). Aquesta experiència marca l'inici del seu paper com a profeta i la revelació dels primers versets de l'Alcorà.",
+                svg: `<svg class="w-full h-full max-h-36 text-gold-400" viewBox="0 0 400 160" fill="none"><path d="M120 160 L230 20 L380 160 Z" fill="#051410" stroke="#d4af37" stroke-width="1.5"/><polygon points="230,20 200,160 260,160" fill="#d4af37" opacity="0.3"/></svg>`
+            },
+            {
+                title: "3. La Hègira: Emigració a Medina",
+                date: "622 d.C.",
+                location: "De La Meca a Medina",
+                description: "Afrontant una creixent oposició de les elits mercantils mequines, Mahoma i la seua comunitat emigren cap a Iathrib (Medina). La Hègira estableix l'any 1 del calendari islàmic i el naixement de la primera comunitat política musulmana (Umma).",
+                svg: `<svg class="w-full h-full max-h-36 text-gold-400" viewBox="0 0 400 160" fill="none"><path d="M320 30 A 25 25 0 1 0 345 65 A 20 20 0 1 1 320 30 Z" fill="#d4af37"/><path d="M0 135 Q100 120 200 135 T400 130 L400 160 L0 160 Z" fill="#0f382c"/></svg>`
+            },
+            {
+                title: "4. Mort de Mahoma a Medina",
+                date: "632 d.C. (8 de Juny)",
+                location: "Medina, Península Aràbiga",
+                description: "Després d'unificar la península aràbiga sota la fe islàmica, Mahoma mor a Medina el 8 de juny del 632. Després del seu traspàs s'inicia el Califat dels Rashidun ('Ben Guiats') amb l'elecció d'Abu Bakr com a primer califa.",
+                svg: `<svg class="w-full h-full max-h-36 text-gold-400" viewBox="0 0 400 160" fill="none"><path d="M160 160 L160 90 A40 40 0 0 1 240 90 L240 160 Z" fill="#0f382c" stroke="#d4af37" stroke-width="2"/><rect x="280" y="40" width="16" height="120" fill="#051410" stroke="#d4af37" stroke-width="1.5"/></svg>`
+            },
+            {
+                title: "5. Victòria sobre els Perses a Qadisiya",
+                date: "637 d.C.",
+                location: "Qadisiya (Iraq)",
+                description: "Les tropes àrabs musulmanes aconsegueixen una victòria crucial davant l'exèrcit de l'Imperi Sasànida en la batalla de Qadisiya. Aquest triomf permet la conquesta ràpida de Mesopotàmia i obri el camí cap a Pèrsia.",
+                svg: `<svg class="w-full h-full max-h-36 text-gold-400" viewBox="0 0 400 160" fill="none"><path d="M120 40 L280 120 M280 40 L120 120" stroke="#d4af37" stroke-width="4"/><circle cx="200" cy="80" r="25" fill="#0f382c" stroke="#d4af37" stroke-width="3"/></svg>`
+            },
+            {
+                title: "6. Conquesta de Jerusalem",
+                date: "638 d.C.",
+                location: "Jerusalem (Al-Quds)",
+                description: "El segon califa, Umar ibn al-Khattab, rep personalment la rendició pacífica de la ciutat de mans del patriarca Sofroni. Umar garanteix la protecció dels llocs sagrats i dels seus habitants.",
+                svg: `<svg class="w-full h-full max-h-36 text-gold-400" viewBox="0 0 400 160" fill="none"><rect x="130" y="100" width="140" height="60" fill="#0f382c" stroke="#d4af37" stroke-width="2"/><path d="M150 100 A50 50 0 0 1 250 100 Z" fill="#d4af37"/></svg>`
+            },
+            {
+                title: "7. Assassinat d'Alí i Dinastia Omeia",
+                date: "661 d.C.",
+                location: "Damasc (Síria)",
+                description: "L'assassinat del quart califa Alí ibn Abi Tàlib posa fi a la fase dels califes Rashidun. Muawiya I estableix el Califat Omeia, traslladant la capital a Damasc i fixant el caràcter hereditari del poder.",
+                svg: `<svg class="w-full h-full max-h-36 text-gold-400" viewBox="0 0 400 160" fill="none"><path d="M160 140 L160 90 L200 60 L240 90 L240 140 Z" fill="#0f382c" stroke="#d4af37" stroke-width="2"/><circle cx="200" cy="40" r="12" fill="#d4af37"/></svg>`
+            },
+            {
+                title: "8. Entrada a la Península Ibèrica",
+                date: "711 d.C.",
+                location: "Estret de Gibraltar / Hispania",
+                description: "Un exèrcit dirigit per Tàriq ibn Ziyad creua l'estret de Gibraltar. Després de la victòria sobre el rei visigot Roderic a Guadalete, comença la conquesta ràpida de la península i la creació d'Al-Àndalus.",
+                svg: `<svg class="w-full h-full max-h-36 text-gold-400" viewBox="0 0 400 160" fill="none"><path d="M260 160 L240 70 L330 90 L380 160 Z" fill="#0f382c" stroke="#d4af37" stroke-width="1.5"/><path d="M100 130 L140 130 L150 142 L90 142 Z" fill="#d4af37"/></svg>`
+            },
+            {
+                title: "9. Fundació de Bagdad",
+                date: "762 d.C.",
+                location: "Bagdad (Iraq)",
+                description: "El califa abbàssida Al-Mansur dissenya la ciutat circular de Bagdad a la riba del riu Tigris. Bagdad es converteix en la capital del nou califat abbàssida i en el principal centre de traducció, ciència i filosofia.",
+                svg: `<svg class="w-full h-full max-h-36 text-gold-400" viewBox="0 0 400 160" fill="none"><circle cx="200" cy="80" r="55" fill="#0f382c" stroke="#d4af37" stroke-width="2"/><circle cx="200" cy="80" r="15" fill="#d4af37"/></svg>`
+            },
+            {
+                title: "10. Proclamació del Califat de Còrdova",
+                date: "929 d.C.",
+                location: "Còrdova (Al-Àndalus)",
+                description: "Abderraman III es proclama califa independent a Còrdova per a reforçar la seua autoritat. Sota el seu govern, Còrdova es transforma en una de les capitals més riques, cultes i monumentals d'Europa.",
+                svg: `<svg class="w-full h-full max-h-36 text-gold-400" viewBox="0 0 400 160" fill="none"><path d="M170 160 L170 90 A30 30 0 1 1 230 90 L230 160 Z" fill="#0f382c" stroke="#d4af37" stroke-width="2"/></svg>`
+            },
+            {
+                title: "11. Entrada dels Turcs Seljúcides a Bagdad",
+                date: "1055 d.C.",
+                location: "Bagdad, Imperi Seljúcida",
+                description: "El cap seljúcida Tugrïl Beg entra a Bagdad i pren el control executiu del califat. El califa abbàssida conserva la primacia religiosa, mentre que el poder militar i polític passa als sultans turcs.",
+                svg: `<svg class="w-full h-full max-h-36 text-gold-400" viewBox="0 0 400 160" fill="none"><path d="M150 30 C 230 30 230 130 150 130" stroke="#d4af37" stroke-width="4" fill="none"/><line x1="120" y1="80" x2="240" y2="80" stroke="#d4af37" stroke-width="3"/></svg>`
+            }
+        ];
+
+        // Barra de progressió d'scroll
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progress-bar').style.width = scrolled + '%';
+        });
+
+        // IntersectionObserver per a l'animació Fade to Scroll
+        const observerOptions = {
+            root: null,
+            threshold: 0.12,
+            rootMargin: "0px 0px -40px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.reveal-item').forEach(el => observer.observe(el));
+        });
+
+        // Filtre per categories
+        function setCategory(cat) {
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.classList.remove('bg-gold-500', 'text-emeraldCustom-950');
+                btn.classList.add('bg-islamicBg', 'text-slate-300', 'border', 'border-emerald-800');
+            });
+            
+            const activeBtn = document.getElementById('cat-' + cat);
+            if (activeBtn) {
+                activeBtn.classList.remove('bg-islamicBg', 'text-slate-300', 'border', 'border-emerald-800');
+                activeBtn.classList.add('bg-gold-500', 'text-emeraldCustom-950');
+            }
+
+            const cards = document.querySelectorAll('.event-card');
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const cardCat = card.getAttribute('data-category');
+                if (cat === 'all' || cardCat === cat) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            checkNoResults(visibleCount);
+        }
+
+        // Cerca en temps real
+        function filterEvents() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const cards = document.querySelectorAll('.event-card');
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const searchText = card.getAttribute('data-search').toLowerCase();
+                const cardContent = card.innerText.toLowerCase();
+
+                if (searchText.includes(query) || cardContent.includes(query)) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            checkNoResults(visibleCount);
+        }
+
+        function checkNoResults(count) {
+            const noResEl = document.getElementById('no-results');
+            if (count === 0) {
+                noResEl.classList.remove('hidden');
+            } else {
+                noResEl.classList.add('hidden');
+            }
+        }
+
+        function resetSearch() {
+            document.getElementById('search-input').value = '';
+            setCategory('all');
+        }
+
+        // Control de la Modal
+        function openModal(index) {
+            const item = eventsData[index];
+            if (!item) return;
+
+            document.getElementById('modal-svg-container').innerHTML = item.svg;
+            document.getElementById('modal-title').innerText = item.title;
+            document.getElementById('modal-date').innerText = item.date;
+            document.getElementById('modal-desc').innerText = item.description;
+            document.getElementById('modal-loc').innerHTML = `<i class="fa-solid fa-location-dot mr-1"></i> Ubicació: ${item.location}`;
+
+            const modal = document.getElementById('modal');
+            const container = document.getElementById('modal-container');
+
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.classList.add('opacity-100');
+            container.classList.remove('scale-95');
+            container.classList.add('scale-100');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            const container = document.getElementById('modal-container');
+
+            modal.classList.remove('opacity-100');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            container.classList.remove('scale-100');
+            container.classList.add('scale-95');
+        }
+
+        document.getElementById('modal').addEventListener('click', (e) => {
+            if (e.target.id === 'modal') closeModal();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+    </script>
+</body>
+</html>
