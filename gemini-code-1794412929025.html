@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Història de l'Islam (Segles VI-XI)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #060c0a;
+            --bg-card: #0d1a17;
+            --bg-card-hover: #132421;
+            --emerald-primary: #10b981;
+            --emerald-glow: rgba(16, 185, 129, 0.2);
+            --gold: #f59e0b;
+            --gold-light: #fbbf24;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: rgba(16, 185, 129, 0.25);
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gold), var(--emerald-primary));
+            width: 0%;
+            z-index: 1000;
+            transition: width 0.1s ease;
+        }
+
+        header {
+            text-align: center;
+            padding: 5rem 1.5rem 3rem;
+            background: radial-gradient(circle at center, #0f2922 0%, var(--bg-deep) 70%);
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        header h1 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2.2rem, 5vw, 3.8rem);
+            color: var(--gold-light);
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+            text-shadow: 0 4px 20px rgba(245, 158, 11, 0.2);
+        }
+
+        header p {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        .controls-container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 0 1rem;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 280px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.85rem 1.2rem 0.85rem 2.8rem;
+            background: rgba(13, 26, 23, 0.8);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-main);
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .search-box input:focus {
+            border-color: var(--emerald-primary);
+            box-shadow: 0 0 15px var(--emerald-glow);
+        }
+
+        .search-box svg {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            fill: var(--text-muted);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            background: rgba(13, 26, 23, 0.8);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 0.6rem 1.2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--emerald-primary);
+            color: #fff;
+            border-color: var(--emerald-primary);
+            box-shadow: 0 0 15px var(--emerald-glow);
+        }
+
+        .timeline {
+            max-width: 1000px;
+            margin: 4rem auto;
+            position: relative;
+            padding: 0 1.5rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, var(--emerald-primary), var(--gold), var(--emerald-primary));
+            opacity: 0.3;
+        }
+
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 20px;
+            }
+        }
+
+        .timeline-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4rem;
+            position: relative;
+            width: 100%;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row-reverse;
+        }
+
+        @media (max-width: 768px) {
+            .timeline-item, .timeline-item:nth-child(odd) {
+                flex-direction: row;
+                justify-content: flex-start;
+                padding-left: 50px;
+            }
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: var(--gold);
+            border: 4px solid var(--bg-deep);
+            border-radius: 50%;
+            z-index: 10;
+            box-shadow: 0 0 10px var(--gold);
+        }
+
+        @media (max-width: 768px) {
+            .timeline-dot {
+                left: 20px;
+            }
+        }
+
+        .timeline-content {
+            width: 45%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .timeline-content {
+                width: 100%;
+            }
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            border-color: var(--emerald-primary);
+            box-shadow: 0 15px 40px rgba(16, 185, 129, 0.2);
+        }
+
+        .card-image-container {
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+            position: relative;
+            background: #02120e;
+        }
+
+        .card-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .timeline-content:hover .card-image-container img {
+            transform: scale(1.06);
+        }
+
+        .card-image-container::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: linear-gradient(to top, var(--bg-card), transparent);
+        }
+
+        .card-body {
+            padding: 1.8rem;
+        }
+
+        .card-year {
+            display: inline-block;
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            color: var(--gold-light);
+            background: rgba(245, 158, 11, 0.12);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            margin-bottom: 0.8rem;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            font-weight: 700;
+        }
+
+        .card-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.35rem;
+            color: var(--text-main);
+            margin-bottom: 0.8rem;
+            line-height: 1.3;
+        }
+
+        .card-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 1.2rem;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--emerald-primary);
+            font-weight: 600;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 4rem 1rem;
+            color: var(--text-muted);
+            display: none;
+            font-size: 1.2rem;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(6, 12, 10, 0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            padding: 1.5rem;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background: var(--bg-card);
+            border: 1px solid var(--emerald-primary);
+            border-radius: 20px;
+            max-width: 650px;
+            width: 100%;
+            overflow: hidden;
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.8);
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: scale(1);
+        }
+
+        .modal-header-img {
+            width: 100%;
+            height: 260px;
+            position: relative;
+        }
+
+        .modal-header-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            background: var(--emerald-primary);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .modal-year {
+            font-family: 'Cinzel', serif;
+            color: var(--gold-light);
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            color: var(--text-main);
+            margin-bottom: 1rem;
+        }
+
+        .modal-text {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        footer.site-footer {
+            text-align: center;
+            padding: 3rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            background: var(--bg-card);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="progress-bar"></div>
+
+    <header>
+        <h1>Història de l'Islam</h1>
+        <p>Evolució històrica, conquestes i apogeu cultural entre els segles VI i XI</p>
+        
+        <div class="controls-container">
+            <div class="search-box">
+                <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                <input type="text" id="searchInput" placeholder="Cerca esdeveniments o anys...">
+            </div>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">Tots</button>
+                <button class="filter-btn" data-filter="origins">Orígens</button>
+                <button class="filter-btn" data-filter="conquests">Conquestes</button>
+                <button class="filter-btn" data-filter="apogee">Apogeu</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="timeline" id="timelineContainer"></main>
+
+    <div class="no-results" id="noResults">
+        No s'ha trobat cap esdeveniment coincident amb la teua cerca.
+    </div>
+
+    <div class="modal-overlay" id="eventModal">
+        <div class="modal-card">
+            <div class="modal-header-img">
+                <img id="modalImg" src="" alt="Imatge detallada">
+                <button class="modal-close" id="modalClose">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-year" id="modalYear"></div>
+                <h2 class="modal-title" id="modalTitle"></h2>
+                <p class="modal-text" id="modalText"></p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <p>© 2026 - Línia Temporal Històrica de l'Islam (Segles VI-XI)</p>
+    </footer>
+
+    <script>
+        const eventsData = [
+            {
+                year: "Cap a 570",
+                category: "origins",
+                title: "Naixement de Mahoma",
+                desc: "Naixement del profeta Mahoma a La Meca, marcant l'inici d'una nova era espiritual i social a la península Aràbiga.",
+                details: "Mahoma va nàixer al si del clan dels haiximites, pertanyent a la tribu dels quraixites a La Meca. La seva figura i missatge transformarien profundament la història universal.",
+                img: "https://upload.wikimedia.org/wikipedia/commons/e/ec/Mecca_Kaaba_pilgrimage.jpg"
+            },
+            {
+                year: "Cap a 610",
+                category: "origins",
+                title: "Primeres revelacions",
+                desc: "Mahoma rep les primeres revelacions divines a la cova de Hira i comença la seua predicació religiosa.",
+                details: "Segons la tradició islàmica, l'arcàngel Gabriel se li va aparéixer a la muntanya Jabal al-Nour, iniciant la transmissió de l'Alcorà i la predicació del monoteisme.",
+                img: "https://upload.wikimedia.org/wikipedia/commons/2/21/Jabal_al-Nour_cave_Hira.jpg"
+            },
+            {
+                year: "622",
+                category: "origins",
+                title: "Emigració a Medina (La Hègira)",
+                desc: "Emigració de La Meca a Medina per persecució, marcant l'inici oficial del calendari islàmic (Hègira).",
+                details: "La Hègira representa l'any 1 del calendari musulmà. A Medina es va establir la primera comunitat política i religiosa autònoma basada en la Constitució de Medina.",
+                img: "https://upload.wikimedia.org/wikipedia/commons/8/8c/Al-Masjid_an-Nabawi_Madinah.jpg"
+            },
+            {
+                year: "632",
+                category: "origins",
+                title: "Mort de Mahoma i inici dels Califats",
+                desc: "Mort del Profeta a Medina i començament del califat d'Abu Bakr per liderar la comunitat islàmica.",
+                details: "Després de la defunció de Mahoma, Abu Bakr fou elegit com el primer califa successor (Khalifa), encetant el període dels Califes Ortodoxos i consolidant la unitat d'Aràbia.",
+                img: "https://upload.wikimedia.org/wikipedia/commons/5/5a/Prophet_Mosque_Dome_Medina.jpg"
+            },
+            {
+                year: "637",
+                category: "conquests",
+                title: "Victòria de Qadisiya sobre els perses",
+                desc: "Victòria decisiva de les tropes musulmanes sobre l'Imperi Sassànida a la batalla de Qadisiya.",
+                details: "Aquesta batalla clau va obrir les portes de Mesopotàmia i va accelerar la caiguda definitiva de l'Imperi Persa davant l'expansió del nou estat islàmic.",
+                img: "https://upload.wikimedia.org/wikipedia/commons/8/86/Ctesiphon_Arch_Iraq.jpg"
+            },
+            {
+                year: "638",
+                category: "conquests",
+                title: "Conquista de Jerusalem",
+                desc: "Incorporació pacífica de Jerusalem sota el califat d'Umar ibn al-Jattab, respectant els llocs sagrats.",
+                details: "Jerusalem va passar a ser administrada sota termes de protecció i llibertat de culte, convertint-se en un dels tres llocs més sagrats del món islàmic.",
+                img: "https://upload.wikimedia.org/wikipedia/commons/f/f3/Dome_of_the_Rock_Jerusalem.jpg"
+            },
+            {
+                year: "661",
+                category: "conquests",
+                title: "Inici de la Dinastia dels Omeyes",
+                desc: "Assassinat d'Alí i instauració de la dinastia califal dels omeyes amb capital a Damasc.",
+                details: "Amb Muawiya I al poder, el centre polític es va traslladar a Síria, creant un vast imperi des de l'Àndalus fins a les fronteres de l'Índia.",
+                img: "https://upload.wikimedia.org/wikipedia/commons/4/4b/Umayyad_Mosque_Damascus_Courtyard.jpg"
+            },
+            {
+                year: "711",
+                category: "conquests",
+                title: "Arribada a l'Índia i Conquista de Hispania",
+                desc: "L'Islam s'estén fins a l'Indo i l'exèrcit d'Àl-Tariq travessa a la Península Ibèrica.",
+                details: "L'any 711 marca l'inici d'Al-Àndalus a la península Ibèrica, creant un centre brillant de ciència, art i convivència a Còrdova.",
+                img: "https://upload.wikimedia.org/wikipedia/commons/1/18/Cordoba_Mezquita_Arches.jpg"
+            },
+            {
+                year: "762",
+                category: "apogee",
+                title: "Fundació de Bagdad",
+                desc: "El califa al-Mansur funda Bagdad, la ciutat circular que esdevé la capital abbàssida i capital del saber.",
+                details: "Bagdad va ser el cor de l'Edat d'Or de l'Islam, acollint la Casa de la Saviesa per traduir obres de filosofia, matemàtiques i medicina.",
+                img: "https://upload.wikimedia.org/wikipedia/commons/8/80/Abbasid_Baghdad_Round_City_Map.jpg"
+            },
+            {
+                year: "929",
+                category: "apogee",
+                title: "Abderrahmán III proclama el Califat de Còrdova",
+                desc: "L'emir Abderrahmán III assumeix el títol de califa, consolidant Al-Àndalus com a potència independent.",
+                details: "Sota el califat de Còrdova, la ciutat andalusina va ser una de les metròpolis més grans i cultes d'Europa, amb biblioteques i palaus monumentals.",
+                img: "https://upload.wikimedia.org/wikipedia/commons/3/36/Medina_Azahara_Cordoba.jpg"
+            },
+            {
+                year: "1055",
+                category: "apogee",
+                title: "Entrada dels turcs selyuquíes a Bagdad",
+                desc: "Els turcs selyuquíes prenen el control polític de Bagdad, reorganitzant el món islàmic oriental.",
+                details: "Aquest fet va marcar l'entrada d'una nova força militar al califat abbàssida, transformant l'equilibri polític d'Orient Mitjà.",
+                img: "https://upload.wikimedia.org/wikipedia/commons/9/98/Seljuk_Architecture_Iran.jpg"
+            }
+        ];
+
+        const timelineContainer = document.getElementById('timelineContainer');
+        const searchInput = document.getElementById('searchInput');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const noResults = document.getElementById('noResults');
+        const progressBar = document.getElementById('progress-bar');
+
+        const modal = document.getElementById('eventModal');
+        const modalImg = document.getElementById('modalImg');
+        const modalYear = document.getElementById('modalYear');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalText = document.getElementById('modalText');
+        const modalClose = document.getElementById('modalClose');
+
+        function renderTimeline(data) {
+            timelineContainer.innerHTML = '';
+            if (data.length === 0) {
+                noResults.style.display = 'block';
+                return;
+            }
+            noResults.style.display = 'none';
+
+            data.forEach((item) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'timeline-item';
+                
+                itemDiv.innerHTML = `
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content" data-index="${eventsData.indexOf(item)}">
+                        <div class="card-image-container">
+                            <img src="${item.img}" alt="${item.title}" loading="lazy" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/e/ec/Mecca_Kaaba_pilgrimage.jpg'">
+                        </div>
+                        <div class="card-body">
+                            <span class="card-year">${item.year}</span>
+                            <h3 class="card-title">${item.title}</h3>
+                            <p class="card-desc">${item.desc}</p>
+                            <div class="card-footer">
+                                <span>Llegir més →</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                timelineContainer.appendChild(itemDiv);
+            });
+
+            observeItems();
+            attachCardListeners();
+        }
+
+        function observeItems() {
+            const items = document.querySelectorAll('.timeline-item');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.15 });
+
+            items.forEach(item => observer.observe(item));
+        }
+
+        function attachCardListeners() {
+            document.querySelectorAll('.timeline-content').forEach(card => {
+                card.addEventListener('click', () => {
+                    const idx = card.getAttribute('data-index');
+                    const event = eventsData[idx];
+                    modalImg.src = event.img;
+                    modalYear.textContent = event.year;
+                    modalTitle.textContent = event.title;
+                    modalText.textContent = event.details;
+                    modal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+        }
+
+        modalClose.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function filterEvents() {
+            const query = searchInput.value.toLowerCase();
+            const activeFilter = document.querySelector('.filter-btn.active').getAttribute('data-filter');
+
+            const filtered = eventsData.filter(item => {
+                const matchesQuery = item.title.toLowerCase().includes(query) || 
+                                     item.desc.toLowerCase().includes(query) || 
+                                     item.year.toLowerCase().includes(query);
+                const matchesCategory = activeFilter === 'all' || item.category === activeFilter;
+                return matchesQuery && matchesCategory;
+            });
+
+            renderTimeline(filtered);
+        }
+
+        searchInput.addEventListener('input', filterEvents);
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                filterEvents();
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            progressBar.style.width = scrolled + '%';
+        });
+
+        renderTimeline(eventsData);
+    </script>
+</body>
+</html>
